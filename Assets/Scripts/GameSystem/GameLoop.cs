@@ -10,7 +10,7 @@ namespace GameSystem
 {
     public class GameLoop : MonoBehaviour
     {
-        public void OnEnable()
+        private void OnEnable()
         {
             var positionView = FindObjectOfType<PositionView>();
             positionView.Selected += PositionViewSelected;
