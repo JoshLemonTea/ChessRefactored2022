@@ -13,8 +13,24 @@ namespace GameSystem
         public void OnEnable()
         {
             var positionView = FindObjectOfType<PositionView>();
-            positionView.Selected += (s, e) => Debug.Log($"Position {s} clicked");
+            positionView.Selected += PositionViewSelected;
 
+        }
+
+        private void PositionViewSelected(object sender, EventArgs e)
+        {
+            if(sender is PositionView view)
+            {
+                var origPos = view.transform.position;
+                var gridPos = PositionHelper.GridPosition(origPos);
+                var worldPos = PositionHelper.WorldPosition(gridPos);
+
+                Debug.Log(
+                    $"Position at original position: {origPos}\n" +
+                    $"         at grid position: {gridPos}\n" +
+                    $"         at world position: {worldPos}\n" );
+            }
+            
         }
     }
 }
