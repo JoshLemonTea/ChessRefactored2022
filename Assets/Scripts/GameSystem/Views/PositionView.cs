@@ -10,6 +10,8 @@ namespace GameSystem.Views
     {
         public event EventHandler Selected;
 
+        public Vector3 WorldPosition => transform.position;
+
         public void OnPointerClick(PointerEventData eventData)
             => OnSelected(EventArgs.Empty);
 

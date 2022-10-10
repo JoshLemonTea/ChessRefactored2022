@@ -12,25 +12,12 @@ namespace GameSystem
     {
         private void OnEnable()
         {
-            var positionView = FindObjectOfType<PositionView>();
-            positionView.Selected += PositionViewSelected;
+            var boardView = FindObjectOfType<BoardView>();
+            boardView.PositionSelected += PositionViewSelected;
 
         }
 
-        private void PositionViewSelected(object sender, EventArgs e)
-        {
-            if(sender is PositionView view)
-            {
-                var origPos = view.transform.position;
-                var gridPos = PositionHelper.GridPosition(origPos);
-                var worldPos = PositionHelper.WorldPosition(gridPos);
-
-                Debug.Log(
-                    $"Position at original position: {origPos}\n" +
-                    $"         at grid position: {gridPos}\n" +
-                    $"         at world position: {worldPos}\n" );
-            }
-            
-        }
+        private void PositionViewSelected(object sender, PositionEventArgs e)
+            => Debug.Log($"Position Selected: {e.Position}");
     }
 }
