@@ -1,34 +1,30 @@
-﻿using GameSystem.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameSystem.Models
+namespace BoardSystem
 {
-    public class PiecePlacedEventArgs : EventArgs
+    public class PiecePlacedEventArgs<TPiece> : EventArgs
     {
         public Position ToPosition { get; }
 
-        public PieceView Piece { get; }
+        public TPiece Piece { get; }
 
-        public PiecePlacedEventArgs(Position toPosition, PieceView piece)
+        public PiecePlacedEventArgs(Position toPosition, TPiece piece)
         {
             ToPosition = toPosition;
             Piece = piece;
         }
     }
 
-    public class PieceMovedEventArgs : EventArgs
+    public class PieceMovedEventArgs<TPiece> : EventArgs
     {
         public Position ToPosition { get; }
 
         public Position FromPosition { get; }
 
-        public PieceView Piece { get; }
+        public TPiece Piece { get; }
 
-        public PieceMovedEventArgs(Position toPosition, Position fromPosition, PieceView piece)
+        public PieceMovedEventArgs(Position toPosition, Position fromPosition, TPiece piece)
         {
             ToPosition = toPosition;
             FromPosition = fromPosition;
@@ -36,29 +32,29 @@ namespace GameSystem.Models
         }
     }
 
-    public class PieceTakenEventArgs : EventArgs
+    public class PieceTakenEventArgs<TPiece> : EventArgs
     {
         public Position FromPosition { get; }
 
-        public PieceView Piece { get; }
+        public TPiece Piece { get; }
 
-        public PieceTakenEventArgs(Position fromPosition, PieceView piece)
+        public PieceTakenEventArgs(Position fromPosition, TPiece piece)
         {
             FromPosition = fromPosition;
             Piece = piece;
         }
     }
 
-    public class Board
+    public class Board<TPiece>
     {
         private int _rows;
         private int _columns;
         
-        private readonly Dictionary<Position, PieceView> _pieces = new Dictionary<Position, PieceView>();
+        private readonly Dictionary<Position, TPiece> _pieces = new Dictionary<Position, TPiece>();
 
-        public event EventHandler<PiecePlacedEventArgs> PiecePlaced;
-        public event EventHandler<PieceMovedEventArgs> PieceMoved;
-        public event EventHandler<PieceTakenEventArgs> PieceTaken;
+        public event EventHandler<PiecePlacedEventArgs<TPiece>> PiecePlaced;
+        public event EventHandler<PieceMovedEventArgs<TPiece>> PieceMoved;
+        public event EventHandler<PieceTakenEventArgs<TPiece>> PieceTaken;
 
         public Board(int rows, int columns)
         {
@@ -67,14 +63,14 @@ namespace GameSystem.Models
         }
 
 
-        public bool TryGetPiece(Position position, out PieceView piece)
+        public bool TryGetPiece(Position position, out TPiece piece)
             => _pieces.TryGetValue(position, out piece);
 
         public bool IsValidPosition(Position position)
             => (0 <= position.X && position.X < _columns) && (0 <= position.Y && position.Y < _rows);
 
 
-        public bool Place(PieceView piece, Position toPosition)
+        public bool Place(TPiece piece, Position toPosition)
         {
             if (!IsValidPosition(toPosition))
                 return false;
@@ -87,7 +83,7 @@ namespace GameSystem.Models
 
             _pieces.Add(toPosition, piece);
 
-            OnPiecePlaced(new PiecePlacedEventArgs(toPosition, piece));
+            OnPiecePlaced(new PiecePlacedEventArgs<TPiece>(toPosition, piece));
 
             return true;
         }
@@ -108,7 +104,7 @@ namespace GameSystem.Models
 
             _pieces.Add(toPosition, piece);
 
-            OnPieceMoved(new PieceMovedEventArgs(toPosition, fromPosition, piece));
+            OnPieceMoved(new PieceMovedEventArgs<TPiece>(toPosition, fromPosition, piece));
 
             return true;
         }
@@ -121,25 +117,25 @@ namespace GameSystem.Models
             if (!_pieces.Remove(fromPosition))
                 return false;
 
-            OnPieceTaken(new PieceTakenEventArgs(fromPosition, piece));
+            OnPieceTaken(new PieceTakenEventArgs<TPiece>(fromPosition, piece));
 
             return true;
         }                                                     
 
 
-        protected virtual void OnPiecePlaced(PiecePlacedEventArgs eventArgs)
+        protected virtual void OnPiecePlaced(PiecePlacedEventArgs<TPiece> eventArgs)
         {
             var handler = PiecePlaced;
             handler?.Invoke(this, eventArgs);
         }
 
-        protected virtual void OnPieceMoved(PieceMovedEventArgs eventArgs)
+        protected virtual void OnPieceMoved(PieceMovedEventArgs<TPiece> eventArgs)
         {
             var handler = PieceMoved;
             handler?.Invoke(this, eventArgs);
         }
 
-        protected virtual void OnPieceTaken(PieceTakenEventArgs eventArgs)
+        protected virtual void OnPieceTaken(PieceTakenEventArgs<TPiece> eventArgs)
         {
             var handler = PieceTaken;
             handler?.Invoke(this, eventArgs);

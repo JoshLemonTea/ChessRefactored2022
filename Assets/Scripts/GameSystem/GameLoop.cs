@@ -1,4 +1,4 @@
-﻿using GameSystem.Models;
+﻿using BoardSystem;
 using GameSystem.Views;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace GameSystem
 {
     public class GameLoop : MonoBehaviour
     {
-        private Board _board = new Board(PositionHelper.Columns, PositionHelper.Columns);
+        private Board<PieceView> _board = new Board<PieceView>(PositionHelper.Columns, PositionHelper.Columns);
 
         private void OnEnable()
         {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameSystem.Models
+namespace BoardSystem
 {
     public struct Position
     {
