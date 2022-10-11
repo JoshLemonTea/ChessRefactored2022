@@ -1,4 +1,5 @@
 ﻿using BoardSystem;
+using ChessSystem;
 using GameSystem.Views;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace GameSystem
 {
     public class GameLoop : MonoBehaviour
     {
-        private Board<PieceView> _board = new Board<PieceView>(PositionHelper.Columns, PositionHelper.Columns);
+        private Board<PieceView> _board = new Board<PieceView>(PositionHelper.Rows, PositionHelper.Columns);
+        private Engine<PieceView> _engine; 
 
         private void OnEnable()
         {
+             _engine = new Engine<PieceView>(_board);
+
             var boardView = FindObjectOfType<BoardView>();
             boardView.PositionSelected += PositionViewSelected;
 
@@ -27,14 +31,11 @@ namespace GameSystem
 
         private void PositionViewSelected(object sender, PositionEventArgs e)
         {
-            Debug.Log($"Position Selected: {e.Position}");
-
             if (_board.TryGetPiece(e.Position, out var piece))
             {
-                Debug.Log($"Position contains {piece.Name}");
-
-                var toPosition = new Position(e.Position.X, e.Position.Y + 1);
-                _board.Move(e.Position, toPosition);                
+                var validPositions = _engine.MoveSets[piece.Type].Positions(e.Position);
+                if(validPositions.Count > 0)
+                    _engine.Move(e.Position,  validPositions[0]);                
             }
         }
 

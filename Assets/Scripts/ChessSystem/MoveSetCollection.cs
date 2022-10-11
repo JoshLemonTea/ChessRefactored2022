@@ -82,9 +82,10 @@ namespace ChessSystem
                                 .CollectValidPositions()));
         }
 
-        public IMoveSet MoveSet(PieceType type)
-        {
-            return _moveSets[type];
-        }
+        public IMoveSet this[PieceType type]
+            => _moveSets[type];
+
+        internal bool TryGetMoveSet(PieceType type, out MoveSet<TPiece> moveSet)
+            => _moveSets.TryGetValue(type, out moveSet);
     }
 }

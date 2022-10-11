@@ -2,7 +2,8 @@
     "name": "GameSystem",
     "rootNamespace": "",
     "references": [
-        "GUID:6e8a97e67c7720341bcb40b6183ea537"
+        "GUID:6e8a97e67c7720341bcb40b6183ea537",
+        "GUID:1bfaad14b62f1fb4cb62305320e75768"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
