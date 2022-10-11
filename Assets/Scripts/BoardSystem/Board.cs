@@ -52,9 +52,11 @@ namespace BoardSystem
         
         private readonly Dictionary<Position, TPiece> _pieces = new Dictionary<Position, TPiece>();
 
+
         public event EventHandler<PiecePlacedEventArgs<TPiece>> PiecePlaced;
         public event EventHandler<PieceMovedEventArgs<TPiece>> PieceMoved;
         public event EventHandler<PieceTakenEventArgs<TPiece>> PieceTaken;
+
 
         public Board(int rows, int columns)
         {
