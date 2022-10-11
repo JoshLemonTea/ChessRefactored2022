@@ -7,13 +7,58 @@ using System.Threading.Tasks;
 
 namespace GameSystem.Models
 {
+    public class PiecePlacedEventArgs : EventArgs
+    {
+        public Position ToPosition { get; }
+
+        public PieceView Piece { get; }
+
+        public PiecePlacedEventArgs(Position toPosition, PieceView piece)
+        {
+            ToPosition = toPosition;
+            Piece = piece;
+        }
+    }
+
+    public class PieceMovedEventArgs : EventArgs
+    {
+        public Position ToPosition { get; }
+
+        public Position FromPosition { get; }
+
+        public PieceView Piece { get; }
+
+        public PieceMovedEventArgs(Position toPosition, Position fromPosition, PieceView piece)
+        {
+            ToPosition = toPosition;
+            FromPosition = fromPosition;
+            Piece = piece;
+        }
+    }
+
+    public class PieceTakenEventArgs : EventArgs
+    {
+        public Position FromPosition { get; }
+
+        public PieceView Piece { get; }
+
+        public PieceTakenEventArgs(Position fromPosition, PieceView piece)
+        {
+            FromPosition = fromPosition;
+            Piece = piece;
+        }
+    }
+
     public class Board
     {
         private int _rows;
         private int _columns;
         
-
         private readonly Dictionary<Position, PieceView> _pieces = new Dictionary<Position, PieceView>();
+
+        public event EventHandler<PiecePlacedEventArgs> PiecePlaced;
+        public event EventHandler<PieceMovedEventArgs> PieceMoved;
+        public event EventHandler<PieceTakenEventArgs> PieceTaken;
 
         public Board(int rows, int columns)
         {
@@ -42,6 +87,8 @@ namespace GameSystem.Models
 
             _pieces.Add(toPosition, piece);
 
+            OnPiecePlaced(new PiecePlacedEventArgs(toPosition, piece));
+
             return true;
         }
 
@@ -61,10 +108,41 @@ namespace GameSystem.Models
 
             _pieces.Add(toPosition, piece);
 
+            OnPieceMoved(new PieceMovedEventArgs(toPosition, fromPosition, piece));
+
             return true;
         }
 
         public bool Take(Position fromPosition)
-            => _pieces.Remove(fromPosition);
+        {
+            if (!_pieces.TryGetValue(fromPosition, out var piece))
+                return false;
+
+            if (!_pieces.Remove(fromPosition))
+                return false;
+
+            OnPieceTaken(new PieceTakenEventArgs(fromPosition, piece));
+
+            return true;
+        }                                                     
+
+
+        protected virtual void OnPiecePlaced(PiecePlacedEventArgs eventArgs)
+        {
+            var handler = PiecePlaced;
+            handler?.Invoke(this, eventArgs);
+        }
+
+        protected virtual void OnPieceMoved(PieceMovedEventArgs eventArgs)
+        {
+            var handler = PieceMoved;
+            handler?.Invoke(this, eventArgs);
+        }
+
+        protected virtual void OnPieceTaken(PieceTakenEventArgs eventArgs)
+        {
+            var handler = PieceTaken;
+            handler?.Invoke(this, eventArgs);
+        }
     }
 }

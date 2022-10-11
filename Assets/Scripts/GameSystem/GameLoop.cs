@@ -22,6 +22,7 @@ namespace GameSystem
             foreach (var pieceView in pieceViews)
                 _board.Place(pieceView, PositionHelper.GridPosition(pieceView.WorldPosition));
 
+            _board.PieceMoved += (s,e) => e.Piece.MoveTo(PositionHelper.WorldPosition(e.ToPosition));
         }
 
         private void PositionViewSelected(object sender, PositionEventArgs e)
@@ -33,11 +34,7 @@ namespace GameSystem
                 Debug.Log($"Position contains {piece.Name}");
 
                 var toPosition = new Position(e.Position.X, e.Position.Y + 1);
-                _board.Move(e.Position, toPosition);
-
-                piece.transform.position = PositionHelper.WorldPosition(toPosition);
-
-                
+                _board.Move(e.Position, toPosition);                
             }
         }
 

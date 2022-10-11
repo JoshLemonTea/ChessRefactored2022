@@ -12,5 +12,8 @@ namespace GameSystem.Views
         public Vector3 WorldPosition => transform.position;
 
         public string Name => gameObject.name;
+
+        public void MoveTo(Vector3 position)
+            => transform.position = position;
     }
 }
