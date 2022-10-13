@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using ChessSystem;
+using GameSystem.GameStates;
 using GameSystem.Views;
 using System;
 using System.Collections.Generic;
@@ -14,30 +15,26 @@ namespace GameSystem
     {
         private Board<PieceView> _board = new Board<PieceView>(PositionHelper.Rows, PositionHelper.Columns);
         private Engine<PieceView> _engine;
-        private BoardView _boardView;
+
+        private GameStateMachine _gameSM;
+
 
         private void OnEnable()
         {
-             _engine = new Engine<PieceView>(_board);
-
-            _boardView = FindObjectOfType<BoardView>();
-            _boardView.PositionSelected += PositionViewSelected;
-
-            var pieceViews = FindObjectsOfType<PieceView>();
-            foreach (var pieceView in pieceViews)
-                _board.Place(pieceView, PositionHelper.GridPosition(pieceView.WorldPosition));
-
-            _board.PieceMoved += (s,e) => e.Piece.MoveTo(PositionHelper.WorldPosition(e.ToPosition));
+            _gameSM = new GameStateMachine();
+            _gameSM.Register(PlayingState.Name, new PlayingState());
+            _gameSM.Register(MenuState.Name, new MenuState());
+            _gameSM.InitialState = MenuState.Name;
         }
 
-        private void PositionViewSelected(object sender, PositionEventArgs e)
+        public void Select()
         {
-            if (_board.TryGetPiece(e.Position, out var piece))
-            {
-                var validPositions = _engine.MoveSets[piece.Type].Positions(e.Position);
-                _boardView.SetActivePositions(validPositions);
-            }
+            _gameSM.CurrentState.Select(new Position(0,0));
         }
 
+        public void Play()
+        {
+            _gameSM.CurrentState.Play();
+        }
     }
 }
