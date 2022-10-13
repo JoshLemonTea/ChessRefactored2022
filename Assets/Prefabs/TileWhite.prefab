@@ -77,6 +77,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5883753132501834104, guid: 6e91eda26d23cac41a2b7161d6e2b8ac,
+        type: 3}
+      propertyPath: OnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2100000, guid: 126360a0747f4a04caf69bf42df0dc54, type: 2}
     - target: {fileID: 6800932851659290109, guid: 6e91eda26d23cac41a2b7161d6e2b8ac,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
