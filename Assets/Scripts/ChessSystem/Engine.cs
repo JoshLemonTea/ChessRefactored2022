@@ -1,5 +1,6 @@
 using BoardSystem;
 using CommandSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +49,10 @@ namespace ChessSystem
         }
 
         private void ChangePlayer()
-            =>  _currentPlayer = (_currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;        
+            =>  _currentPlayer = (_currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+
+        public bool TryGetPiece(Position position, out TPiece piece)
+            => _board.TryGetPiece(position, out piece) && piece.Player == _currentPlayer;
     }
 
 }

@@ -64,13 +64,11 @@ namespace BoardSystem
             _columns = columns;
         }
 
-
         public bool TryGetPiece(Position position, out TPiece piece)
             => _pieces.TryGetValue(position, out piece);
 
         public bool IsValidPosition(Position position)
             => (0 <= position.X && position.X < _columns) && (0 <= position.Y && position.Y < _rows);
-
 
         public bool Place(TPiece piece, Position toPosition)
         {

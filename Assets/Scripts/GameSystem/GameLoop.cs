@@ -21,6 +21,7 @@ namespace GameSystem
 
         private void OnEnable()
         {
+            
             _gameSM = new GameStateMachine();
             _gameSM.Register(PlayingState.Name, new PlayingState());
             _gameSM.Register(MenuState.Name, new MenuState());
