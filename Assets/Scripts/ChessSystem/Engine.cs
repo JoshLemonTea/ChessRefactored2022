@@ -1,4 +1,5 @@
 using BoardSystem;
+using CommandSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +10,17 @@ namespace ChessSystem
         where TPiece : IPiece
     {
         private readonly Board<TPiece> _board;
+        private readonly CommandQueue _commandQueue;
         private Player _currentPlayer;
 
         public MoveSetCollection<TPiece> MoveSets { get; }
 
         
 
-        public Engine(Board<TPiece> board)
+        public Engine(Board<TPiece> board, CommandQueue commandQueue)
         {
             _board = board;
+            _commandQueue = commandQueue;
             MoveSets = new MoveSetCollection<TPiece>(_board);
             _currentPlayer = Player.Player1;
         }
@@ -36,7 +39,7 @@ namespace ChessSystem
             if (!moveSet.Positions(fromPosition).Contains(toPosition))
                 return false;
 
-            if (!moveSet.Execute(fromPosition, toPosition))
+            if (!moveSet.Execute(fromPosition, toPosition, _commandQueue))
                 return false;
 
            ChangePlayer();

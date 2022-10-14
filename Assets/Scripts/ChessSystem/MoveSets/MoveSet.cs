@@ -1,4 +1,5 @@
 ﻿using BoardSystem;
+using CommandSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,31 @@ namespace ChessSystem.MoveSets
 
         public abstract List<Position> Positions(Position fromPosition);
 
-        internal virtual bool Execute(Position fromPosition, Position toPosition)
+        internal virtual bool Execute(Position fromPosition, Position toPosition, CommandQueue commandQueue)
         {
-            Board.Take(toPosition);
+            var pieceTaken = Board.TryGetPiece(toPosition, out var toPiece);
+            Func<bool> commit = () =>
+            {
+                bool success = true;
 
-            return Board.Move(fromPosition, toPosition);
+                if (pieceTaken)
+                    success &= Board.Take(toPosition);
+
+                success &= Board.Move(fromPosition, toPosition);
+
+                return success;
+            };
+
+            Func<bool> rollback = () => {
+                var success = Board.Move(toPosition, fromPosition);
+
+                if (pieceTaken)
+                    success &= Board.Place(toPiece, fromPosition);
+
+                return success;
+            };
+
+            return commandQueue.Execute(new DelegatingCommand(commit, rollback));
         }
     }
 }

@@ -2,7 +2,8 @@
     "name": "ChessSystem",
     "rootNamespace": "",
     "references": [
-        "GUID:6e8a97e67c7720341bcb40b6183ea537"
+        "GUID:6e8a97e67c7720341bcb40b6183ea537",
+        "GUID:328688c802f4bf945924e40bad1f2573"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
