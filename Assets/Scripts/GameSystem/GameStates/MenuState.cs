@@ -1,9 +1,11 @@
-﻿using System;
+﻿using GameSystem.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameSystem.GameStates
 {
@@ -11,22 +13,30 @@ namespace GameSystem.GameStates
     {
         public const string Name = "Menu";
 
+        private MenuView _menuView;
+
         public override void OnEnter()
         {
-            base.OnEnter();
-            Debug.Log("Entering Menu");
+            var loading = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+            loading.completed += OnSceneLoaded;
         }
-
 
         public override void OnExit()
         {
-            base.OnEnter();
-            Debug.Log("Exiting Menu");
+            _menuView.Hide();
+            SceneManager.UnloadSceneAsync(1);
         }
 
-        public override void Play()
+        
+
+        private void OnSceneLoaded(AsyncOperation obj)
         {
-            StateMachine.MoveTo(PlayingState.Name);    
+            _menuView = GameObject.FindObjectOfType<MenuView>(true);
+            if (_menuView != null)
+            {
+                _menuView.StartClicked += (s, e) => StateMachine.MoveTo(PlayingState.Name); ;
+                _menuView.Show();
+            }
         }
     }
 }

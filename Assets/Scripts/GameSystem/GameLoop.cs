@@ -26,15 +26,5 @@ namespace GameSystem
             _gameSM.Register(MenuState.Name, new MenuState());
             _gameSM.InitialState = MenuState.Name;
         }
-
-        public void Select()
-        {
-            _gameSM.CurrentState.Select(new Position(0,0));
-        }
-
-        public void Play()
-        {
-            _gameSM.CurrentState.Play();
-        }
     }
 }

@@ -15,8 +15,5 @@ namespace GameSystem.GameStates
 
         public virtual void OnExit() {}
 
-        public virtual void Play() {}
-
-        public virtual void Select(Position position) { }
     }
 }
