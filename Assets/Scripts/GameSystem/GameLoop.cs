@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using ChessSystem;
+using CommandSystem;
 using GameSystem.GameStates;
 using GameSystem.Views;
 using System;
@@ -13,18 +14,18 @@ namespace GameSystem
 {
     public class GameLoop : MonoBehaviour
     {
-        private Board<PieceView> _board = new Board<PieceView>(PositionHelper.Rows, PositionHelper.Columns);
-        private Engine<PieceView> _engine;
-
         private GameStateMachine _gameSM;
 
 
         private void OnEnable()
         {
-            
+            var commandQueue = new CommandQueue();
+
+
             _gameSM = new GameStateMachine();
-            _gameSM.Register(PlayingState.Name, new PlayingState());
+            _gameSM.Register(PlayingState.Name, new PlayingState(commandQueue));
             _gameSM.Register(MenuState.Name, new MenuState());
+            _gameSM.Register(ReplayState.Name, new ReplayState(commandQueue));
             _gameSM.InitialState = MenuState.Name;
         }
     }

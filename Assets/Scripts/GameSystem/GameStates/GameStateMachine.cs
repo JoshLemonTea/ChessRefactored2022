@@ -44,7 +44,7 @@ namespace GameSystem.GameStates
 
         public void Push(string stateName)
         {
-            CurrentState?.OnExit();
+            CurrentState?.OnSuspend();
 
             _currentStateNames.Add(stateName);
 
@@ -57,7 +57,7 @@ namespace GameSystem.GameStates
 
             _currentStateNames.RemoveAt(_currentStateNames.Count - 1);
 
-            CurrentState?.OnEnter();
+            CurrentState?.OnResume();
         }
 
 

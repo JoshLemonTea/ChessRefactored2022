@@ -22,10 +22,12 @@ namespace GameSystem.GameStates
 
         private BoardView _boardView;
         private Position? _fromPosition;
+        private ReplayView _replayView;
 
-        public PlayingState()
+        public PlayingState(CommandQueue commandQueue)
         {
-            _commandQueue = new CommandQueue();
+            _commandQueue = commandQueue;
+
             _board = new Board<PieceView>(PositionHelper.Rows, PositionHelper.Columns);
             _engine = new Engine<PieceView>(_board, _commandQueue);
 
@@ -49,7 +51,19 @@ namespace GameSystem.GameStates
             _boardView = GameObject.FindObjectOfType<BoardView>();  
             if(_boardView != null)
             {
-                _boardView.PositionSelected += SelectTile;
+                _boardView.PositionSelected += (e, s) => StateMachine.CurrentState.SelectTile(e,s);
+            }
+
+            _replayView = GameObject.FindObjectOfType<ReplayView>();
+            if (_replayView)
+            {
+                _replayView.Backward += (e, s) => StateMachine.CurrentState.Backward(e,s);
+                _replayView.Forward += (e, s) => StateMachine.CurrentState.Forward(e, s);
+                _commandQueue.Changed += (e, s) =>
+                {
+                    _replayView.CanGoBack = !_commandQueue.IsAtStart;
+                    _replayView.CanGoForward = !_commandQueue.IsAtEnd;
+                };
             }
 
             var pieces = GameObject.FindObjectsOfType<PieceView>();
@@ -57,7 +71,13 @@ namespace GameSystem.GameStates
                 _board.Place(piece, PositionHelper.GridPosition(piece.WorldPosition));
         }
 
-        private void SelectTile(object source, PositionEventArgs eventArgs)
+
+        public override void Backward(object sender, EventArgs e)
+        {
+            StateMachine.Push(ReplayState.Name);    
+        }
+
+        public override void SelectTile(object source, PositionEventArgs eventArgs)
         {
             
             var position = eventArgs.Position;
