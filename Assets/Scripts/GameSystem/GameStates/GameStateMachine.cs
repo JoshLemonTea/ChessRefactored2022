@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,8 +24,13 @@ namespace GameSystem.GameStates
             {
                 _currentStateNames.Clear();
                 _currentStateNames.Add(value);
-                CurrentState.OnEnter();
             }
+        }
+
+        public async UniTask Start()
+        {
+            await CurrentState.OnEnter();
+            await CurrentState.OnResume();
         }
 
         public void Register(string stateName, GameState state)
@@ -33,31 +39,49 @@ namespace GameSystem.GameStates
             _states.Add(stateName, state);
         }
 
-        public void MoveTo(string stateName)
+        public async UniTask MoveTo(string stateName)
         {
-            CurrentState?.OnExit();
+            if (CurrentState != null)
+            {
+                await CurrentState.OnSuspend();
+                await CurrentState.OnExit();
+            }
 
             _currentStateNames[_currentStateNames.Count - 1] = stateName;
 
-            CurrentState?.OnEnter();
+            if (CurrentState != null)
+            {
+                await CurrentState.OnEnter();
+                await CurrentState.OnResume();
+            }
         }
 
-        public void Push(string stateName)
+        public async UniTask Push(string stateName)
         {
-            CurrentState?.OnExit();
+            if(CurrentState != null)
+                await CurrentState.OnSuspend();
 
             _currentStateNames.Add(stateName);
 
-            CurrentState?.OnEnter();
+            if (CurrentState != null)
+            {
+                await CurrentState.OnEnter();
+                await CurrentState.OnResume();
+            }
         }
 
-        public void Pop()
+        public async UniTask Pop()
         {
-            CurrentState?.OnExit();
+            if (CurrentState != null)
+            {
+                await CurrentState.OnSuspend();
+                await CurrentState.OnExit();
+            }
 
             _currentStateNames.RemoveAt(_currentStateNames.Count - 1);
 
-            CurrentState?.OnEnter();
+            if(CurrentState != null)
+                await CurrentState.OnResume();
         }
 
 

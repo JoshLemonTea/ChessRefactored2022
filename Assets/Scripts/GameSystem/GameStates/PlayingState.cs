@@ -1,6 +1,7 @@
 ﻿using BoardSystem;
 using ChessSystem;
 using CommandSystem;
+using Cysharp.Threading.Tasks;
 using GameSystem.Views;
 using System;
 using System.Collections.Generic;
@@ -33,29 +34,39 @@ namespace GameSystem.GameStates
 
         }
 
-        public override void OnEnter()
-        {
-            var loading = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
-            loading.completed += OnSceneLoaded;
-        }
 
-        public override void OnExit()
+        public override async UniTask OnEnter()
         {
-            SceneManager.UnloadSceneAsync(2);
-        }
+            await SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
 
-        private void OnSceneLoaded(AsyncOperation obj)
-        {
-            _boardView = GameObject.FindObjectOfType<BoardView>();  
-            if(_boardView != null)
-            {
-                _boardView.PositionSelected += SelectTile;
-            }
-
+            _boardView = GameObject.FindObjectOfType<BoardView>();
             var pieces = GameObject.FindObjectsOfType<PieceView>();
-            foreach(var piece in pieces)
+            foreach (var piece in pieces)
                 _board.Place(piece, PositionHelper.GridPosition(piece.WorldPosition));
         }
+
+        public override async UniTask OnExit()
+        {
+            await base.OnExit();
+            await SceneManager.UnloadSceneAsync(2);
+        }
+
+        public override async UniTask OnResume()
+        {
+            await base.OnResume();
+            
+            if(_boardView != null)
+                _boardView.PositionSelected += SelectTile;
+        }
+
+        public override async UniTask OnSuspend()
+        {
+            await base.OnResume();
+
+            if (_boardView != null)
+                _boardView.PositionSelected -= SelectTile;
+        }
+
 
         private void SelectTile(object source, PositionEventArgs eventArgs)
         {

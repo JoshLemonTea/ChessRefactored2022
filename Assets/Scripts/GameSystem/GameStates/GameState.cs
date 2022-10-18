@@ -1,4 +1,5 @@
 ﻿using BoardSystem;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,15 @@ namespace GameSystem.GameStates
     {
         public GameStateMachine StateMachine { get; internal set; }
 
-        public virtual void OnEnter() {}
+        
+        public virtual  UniTask OnEnter() { return UniTask.CompletedTask; }
+        
+        public virtual UniTask OnResume() { return UniTask.CompletedTask; }
 
-        public virtual void OnExit() {}
+        public virtual UniTask OnSuspend() { return UniTask.CompletedTask; }
+
+        public virtual  UniTask OnExit() { return UniTask.CompletedTask; }
+
 
     }
 }

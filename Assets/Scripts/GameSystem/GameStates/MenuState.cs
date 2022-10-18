@@ -1,4 +1,5 @@
-﻿using GameSystem.Views;
+﻿using Cysharp.Threading.Tasks;
+using GameSystem.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,28 +16,39 @@ namespace GameSystem.GameStates
 
         private MenuView _menuView;
 
-        public override void OnEnter()
+        public override async UniTask OnEnter()
         {
-            var loading = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-            loading.completed += OnSceneLoaded;
-        }
+            await base.OnEnter();
+            await SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
-        public override void OnExit()
-        {
-            _menuView.Hide();
-            SceneManager.UnloadSceneAsync(1);
-        }
-
-        
-
-        private void OnSceneLoaded(AsyncOperation obj)
-        {
             _menuView = GameObject.FindObjectOfType<MenuView>(true);
+            
+        }
+
+        public override async UniTask OnResume()
+        {
+            await base.OnResume();
             if (_menuView != null)
             {
-                _menuView.StartClicked += (s, e) => StateMachine.MoveTo(PlayingState.Name); ;
+                _menuView.StartClicked += async (s, e) => await StateMachine.MoveTo(PlayingState.Name);
                 _menuView.Show();
             }
+        }
+
+        public override async UniTask OnSuspend()
+        {
+            await base.OnSuspend();
+            if (_menuView != null)
+            {
+                _menuView.StartClicked += async (s, e) => await StateMachine.MoveTo(PlayingState.Name);
+                _menuView.Hide();
+            }
+        }
+
+        public override async UniTask OnExit()
+        {
+            await base.OnExit();
+            await SceneManager.UnloadSceneAsync(1);
         }
     }
 }

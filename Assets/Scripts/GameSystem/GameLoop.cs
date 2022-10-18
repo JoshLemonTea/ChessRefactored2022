@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using ChessSystem;
+using Cysharp.Threading.Tasks;
 using GameSystem.GameStates;
 using GameSystem.Views;
 using System;
@@ -19,13 +20,14 @@ namespace GameSystem
         private GameStateMachine _gameSM;
 
 
-        private void OnEnable()
+        private async UniTask OnEnable()
         {
             
             _gameSM = new GameStateMachine();
             _gameSM.Register(PlayingState.Name, new PlayingState());
             _gameSM.Register(MenuState.Name, new MenuState());
             _gameSM.InitialState = MenuState.Name;
+            await _gameSM.Start();
         }
     }
 }
