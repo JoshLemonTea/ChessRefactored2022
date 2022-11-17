@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace ChessSystem
 {
+    //ask for moveset of certain piece type
+    //Tpiece goes for entire project
     public class Engine<TPiece>
         where TPiece : IPiece
     {

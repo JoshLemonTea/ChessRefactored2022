@@ -10,6 +10,7 @@ namespace ChessSystem
 {
     public class MoveSetCollection<TPiece>
         where TPiece : IPiece
+        
     {
         private Dictionary<PieceType, MoveSet<TPiece>> _moveSets = new Dictionary<PieceType, MoveSet<TPiece>>(); 
 
@@ -84,7 +85,7 @@ namespace ChessSystem
 
         public IMoveSet this[PieceType type]
             => _moveSets[type];
-
+        //internal means only accessible in this class
         internal bool TryGetMoveSet(PieceType type, out MoveSet<TPiece> moveSet)
             => _moveSets.TryGetValue(type, out moveSet);
     }

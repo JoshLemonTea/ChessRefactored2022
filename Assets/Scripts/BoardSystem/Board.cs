@@ -6,7 +6,7 @@ namespace BoardSystem
     public class PiecePlacedEventArgs<TPiece> : EventArgs
     {
         public Position ToPosition { get; }
-
+        //generic parameter
         public TPiece Piece { get; }
 
         public PiecePlacedEventArgs(Position toPosition, TPiece piece)
@@ -31,7 +31,7 @@ namespace BoardSystem
             Piece = piece;
         }
     }
-
+    //generic class because it contains generic parameter
     public class PieceTakenEventArgs<TPiece> : EventArgs
     {
         public Position FromPosition { get; }
@@ -49,7 +49,10 @@ namespace BoardSystem
     {
         private int _rows;
         private int _columns;
-        
+
+        //linking position with board
+        //generic parameter 
+        //define generic parameters for class instead of using a concrete class
         private readonly Dictionary<Position, TPiece> _pieces = new Dictionary<Position, TPiece>();
 
 

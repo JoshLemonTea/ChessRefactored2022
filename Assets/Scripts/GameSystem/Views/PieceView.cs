@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameSystem.Views
 {
-    public class PieceView : MonoBehaviour, IPiece
+    public class PieceView : MonoBehaviour, IPiece //add IPiece to be able to use it
     {
 
         [SerializeField]
