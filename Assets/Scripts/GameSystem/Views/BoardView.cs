@@ -22,6 +22,7 @@ namespace GameSystem.Views
         private readonly Dictionary<Position, PositionView> _positions = new Dictionary<Position, PositionView>();
         private List<Position> _activatedPosition = new List<Position>();
 
+
         private void OnEnable()
         {
             var positionViews = GetComponentsInChildren<PositionView>();
@@ -34,11 +35,14 @@ namespace GameSystem.Views
 
         public void SetActivePositions(List<Position> positions)
         {
+            //dehighlight
             foreach (var position in _activatedPosition)
                 _positions[position].Deactivate();
 
             _activatedPosition = positions;
 
+            //cache all positions
+            //highlight
             foreach (var position in positions)
                 _positions[position].Activate();
         }

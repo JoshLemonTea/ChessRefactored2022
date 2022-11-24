@@ -28,28 +28,28 @@ namespace ChessSystem.MoveSets
             _player = piece.Player;
         }
 
-        public MoveSetHelper<TPiece> North(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> Forward(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(0, 1, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> NorthEast(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> ForwardRight(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(1, 1, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> East(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> Right(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(1, 0, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> SouthEast(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> BackwardRight(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(1, -1, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> South(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> Backward(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(0, -1, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> SouthWest(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> BackwardLeft(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(-1, -1, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> West(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> Left(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(-1, 0, maxSteps, validators);
 
-        public MoveSetHelper<TPiece> NorthWest(int maxSteps = int.MaxValue, params Validator[] validators)
+        public MoveSetHelper<TPiece> ForwardLeft(int maxSteps = int.MaxValue, params Validator[] validators)
             => Collect(-1, 1, maxSteps, validators);
 
         public MoveSetHelper<TPiece> Collect(int xOffset, int yOffset, int maxSteps = int.MaxValue, params Validator[] validators)

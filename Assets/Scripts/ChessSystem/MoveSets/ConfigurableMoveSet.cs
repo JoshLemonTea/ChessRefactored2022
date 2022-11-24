@@ -18,6 +18,7 @@ namespace ChessSystem.MoveSets
             _collectPositions = collectPositions;
         }
 
+        //constructor
         public override List<Position> Positions(Position fromPosition)
             => _collectPositions(Board, fromPosition);
     }

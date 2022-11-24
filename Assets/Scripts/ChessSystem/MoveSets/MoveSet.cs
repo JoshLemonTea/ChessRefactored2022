@@ -10,6 +10,7 @@ namespace ChessSystem.MoveSets
 {
     internal abstract class MoveSet<TPiece> : IMoveSet
     {
+        //accessor to give access to Board
         protected Board<TPiece> Board { get; }
 
         protected MoveSet(Board<TPiece> board)

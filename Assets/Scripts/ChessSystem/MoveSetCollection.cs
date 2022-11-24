@@ -19,19 +19,19 @@ namespace ChessSystem
             _moveSets.Add(PieceType.Pawn,
                     new ConfigurableMoveSet<TPiece>(board,
                         (Board<TPiece> b, Position p) => new MoveSetHelper<TPiece>(b, p)
-                                     .North(1, MoveSetHelper<TPiece>.Empty)
+                                     .Forward(1, MoveSetHelper<TPiece>.Empty)
                                      //.North(2, MoveSetHelper<TPiece>.Empty, MoveSetHelper<TPiece>.HasnotMove)
-                                     .NorthEast(1, MoveSetHelper<TPiece>.ContainsEnemy)
-                                     .NorthWest(1, MoveSetHelper<TPiece>.ContainsEnemy)
+                                     .ForwardRight(1, MoveSetHelper<TPiece>.ContainsEnemy)
+                                     .ForwardLeft(1, MoveSetHelper<TPiece>.ContainsEnemy)
                                      .CollectValidPositions()));
 
             _moveSets.Add(PieceType.Rook,
                 new ConfigurableMoveSet<TPiece>(board,
                     (b, p) => new MoveSetHelper<TPiece>(b, p)
-                                 .North()
-                                 .East()
-                                 .South()
-                                 .West()
+                                 .Forward()
+                                 .Right()
+                                 .Backward()
+                                 .Left()
                                  .CollectValidPositions()));
 
             _moveSets.Add(ChessSystem.PieceType.Knight,
@@ -50,36 +50,36 @@ namespace ChessSystem
             _moveSets.Add(ChessSystem.PieceType.Bishop,
                 new ConfigurableMoveSet<TPiece>(board,
                     (b, p) => new MoveSetHelper<TPiece>(b, p)
-                                 .NorthEast()
-                                 .NorthWest()
-                                 .SouthEast()
-                                 .SouthWest()
+                                 .ForwardRight()
+                                 .ForwardLeft()
+                                 .BackwardRight()
+                                 .BackwardLeft()
                                  .CollectValidPositions()));
 
             _moveSets.Add(ChessSystem.PieceType.Queen,
                 new ConfigurableMoveSet<TPiece>(board,
                     (b, p) => new MoveSetHelper<TPiece>(b, p)
-                                 .North()
-                                 .East()
-                                 .South()
-                                 .West()
-                                 .NorthEast()
-                                 .NorthWest()
-                                 .SouthEast()
-                                 .SouthWest()
+                                 .Forward()
+                                 .Right()
+                                 .Backward()
+                                 .Left()
+                                 .ForwardRight()
+                                 .ForwardLeft()
+                                 .BackwardRight()
+                                 .BackwardLeft()
                                  .CollectValidPositions()));
 
             _moveSets.Add(ChessSystem.PieceType.King,
                 new ConfigurableMoveSet<TPiece>(board,
                     (b, p) => new MoveSetHelper<TPiece>(b, p)
-                                .North(1)
-                                .East(1)
-                                .South(1)
-                                .West(1)
-                                .NorthEast(1)
-                                .NorthWest(1)
-                                .SouthEast(1)
-                                .SouthWest(1)
+                                .Forward(1)
+                                .Right(1)
+                                .Backward(1)
+                                .Left(1)
+                                .ForwardRight(1)
+                                .ForwardLeft(1)
+                                .BackwardRight(1)
+                                .BackwardLeft(1)
                                 .CollectValidPositions()));
         }
 

@@ -33,7 +33,7 @@ namespace GameSystem.Views
             handler?.Invoke(this, eventArgs);
             _PreparePerfMarker.End();
         }
-
+        //use this to change color of something that gets activated
         internal void Activate()
             => OnActivation?.Invoke();
 
